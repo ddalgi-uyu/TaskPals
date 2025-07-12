@@ -64,11 +64,14 @@ const TaskPals = () => {
     <div className="w-110">
       <div className="p-4 h-100 bg-white rounded-xl shadow-lg">
         <div className="space-y-4">
+
+          <!-- Pet Progress Bar-->
           <PetProgressBar
             taskForProgressBar={taskForProgressBar}
             onResetProgress={onResetProgress}
           />
 
+          <!-- Title Bar -->
           <div className="flex justify-between items-center w-full">
             <div className="pl-2 text-black">Today</div>
             <button onClick={atClickAdd} className="pr-2">
@@ -77,8 +80,10 @@ const TaskPals = () => {
           </div>
 
           <div className="flex flex-col h-50">
+            <!-- Todo Form -->
             {createNewItem ? <TodoForm onAddItem={atAddItem}/> : null}
 
+            <!-- List Card -->
             {toDoList.length ? (
               <ul className={`flex-1${createNewItem ? 'h-11/12' : 'h-full'} overflow-y-auto scrollbar-thumb-gray-300 scrollbar-track-transparent rounded-xl p-2 shadow-md bg-white`}>
                 {toDoList.map((toDoItem) => (
