@@ -1,16 +1,18 @@
+'use client';
+
 import { useState, useEffect } from "react";
 
 import Lottie from "lottie-react";
 
-import PinkEgg from "../Assets-TaskPals/egg_pink_2.json";
-import PinkKitten from "../Assets-TaskPals/kitten_pink_2.json";
-import PinkCat from "../Assets-TaskPals/cat_pink_2.json";
-import BlueEgg from "../Assets-TaskPals/egg_blue_2.json";
-import BlueKitten from "../Assets-TaskPals/kitten_blue_2.json";
-import BlueCat from "../Assets-TaskPals/cat_blue_2.json";
-import YellowEgg from "../Assets-TaskPals/egg_yellow_2.json";
-import YellowKitten from "../Assets-TaskPals/kitten_yellow_2.json";
-import YellowCat from "../Assets-TaskPals/cat_yellow_2.json";
+import PinkEgg from "../assets/egg_pink_2.json";
+import PinkKitten from "../assets/kitten_pink_2.json";
+import PinkCat from "../assets/cat_pink_2.json";
+import BlueEgg from "../assets/egg_blue_2.json";
+import BlueKitten from "../assets/kitten_blue_2.json";
+import BlueCat from "../assets/cat_blue_2.json";
+import YellowEgg from "../assets/egg_yellow_2.json";
+import YellowKitten from "../assets/kitten_yellow_2.json";
+import YellowCat from "../assets/cat_yellow_2.json";
 
 const PetProgressBar = ({ taskForProgressBar, onResetProgress }) => {
     // pet

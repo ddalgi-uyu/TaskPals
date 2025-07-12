@@ -1,8 +1,11 @@
+'use client';
+
 import { useState} from "react";
-import ListCard from "./Components/ListCard";
-import PetProgressBar from "./Components/PetProgressBar";
-import TodoForm from "./Components/TodoForm";
-import addIcon from "./Assets-TaskPals/add-icon.svg";
+import ListCard from "./ListCard";
+import PetProgressBar from "./PetProgressBar";
+import TodoForm from "./TodoForm";
+import Image from 'next/image';
+import addIcon from "../assets/add-icon.svg";
 
 const TaskPals = () => {
   const initialList = [];
@@ -61,16 +64,15 @@ const TaskPals = () => {
     <div className="w-110">
       <div className="p-4 h-100 bg-white rounded-xl shadow-lg">
         <div className="space-y-4">
-          <div className="bg-red-500 text-white p-4">If this is red, Tailwind works!</div>
           <PetProgressBar
             taskForProgressBar={taskForProgressBar}
             onResetProgress={onResetProgress}
           />
 
           <div className="flex justify-between items-center w-full">
-            <div className="pl-2">Today</div>
+            <div className="pl-2 text-black">Today</div>
             <button onClick={atClickAdd} className="pr-2">
-              <img src={addIcon} alt="Add icon"/>
+              <Image src={addIcon} alt="Add icon"/>
             </button>
           </div>
 

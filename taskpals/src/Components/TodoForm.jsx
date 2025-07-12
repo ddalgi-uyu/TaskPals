@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from "react";
 
 const TodoForm = ({ onAddItem }) => {
@@ -24,7 +26,7 @@ const TodoForm = ({ onAddItem }) => {
                 setInput(e.target.value);
               }}
               placeholder="New task..."
-              className="text-md pl-4 w-full"
+              className="text-md pl-4 w-full text-gray-700"
             />
           </form>
         </div>
