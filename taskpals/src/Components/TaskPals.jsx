@@ -13,6 +13,7 @@ const TaskPals = () => {
   const [createNewItem, setCreateNewItem] = useState(false);
   const [taskCompleted, setTaskCompleted] = useState(0);
   const [taskForProgressBar, setTaskForProgressBar] = useState(0);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   const atAddItem = (text) => {
     const item = {
@@ -55,10 +56,24 @@ const TaskPals = () => {
     setCreateNewItem(true);
   };
 
-  // Reset only progress bar count
+  // Reset progress bar count
   const onResetProgress = () => {
     setTaskForProgressBar(0);
   };
+
+  useEffect(() => {
+    const saved = localStorage.getItem('todoList');
+    if (saved) {
+      setToDoList(JSON.parse(saved));
+    }
+    setIsLoaded(true);
+  }, []);
+
+  useEffect(() => {
+    if (isLoaded) {
+      localStorage.setItem('todoList', JSON.stringify(toDoList));
+    }
+  }, [toDoList, isLoaded]);
 
   return (
     <div className="w-110">
