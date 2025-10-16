@@ -3,85 +3,132 @@
 import { useState, useEffect } from "react";
 import Lottie from "lottie-react";
 
-// Import animation files for different pet colors and stages
-import PinkEgg from "@/assets/egg_pink_2.json";
-import PinkKitten from "@/assets/kitten_pink_2.json";
-import PinkCat from "@/assets/cat_pink_2.json";
-import BlueEgg from "@/assets/egg_blue_2.json";
-import BlueKitten from "@/assets/kitten_blue_2.json";
-import BlueCat from "@/assets/cat_blue_2.json";
-import YellowEgg from "@/assets/egg_yellow_2.json";
-import YellowKitten from "@/assets/kitten_yellow_2.json";
-import YellowCat from "@/assets/cat_yellow_2.json";
+import PinkEgg from "../assets/egg_pink_2.json";
+import PinkKitten from "../assets/kitten_pink_2.json";
+import PinkCat from "../assets/cat_pink_2.json";
+import BlueEgg from "../assets/egg_blue_2.json";
+import BlueKitten from "../assets/kitten_blue_2.json";
+import BlueCat from "../assets/cat_blue_2.json";
+import YellowEgg from "../assets/egg_yellow_2.json";
+import YellowKitten from "../assets/kitten_yellow_2.json";
+import YellowCat from "../assets/cat_yellow_2.json";
+
+const STORAGE_KEY = 'currentPetIndex';
 
 const PetProgressBar = ({ taskForProgressBar, onResetProgress }) => {
     
     // Pet evolution - baby, juvenile, mature
     const pets = [
-        { baby: PinkEgg, juvenile: PinkKitten, mature: PinkCat },
-        { baby: BlueEgg, juvenile: BlueKitten, mature: BlueCat },
-        { baby: YellowEgg, juvenile: YellowKitten, mature: YellowCat },
+        { baby: PinkEgg, juvenile: PinkKitten, mature: PinkCat, name: 'Pink' },
+        { baby: BlueEgg, juvenile: BlueKitten, mature: BlueCat, name: 'Blue' },
+        { baby: YellowEgg, juvenile: YellowKitten, mature: YellowCat, name: 'Yellow' },
     ];
 
-    // Randomly select initial pet color
-    const [currentPet, setCurrentPet] = useState(
-        pets[Math.floor(Math.random() * pets.length)]
-    );
-    
-    // Prevent multiple evolution timers
+    // State to track if data is loaded from localStorage
+    const [isLoaded, setIsLoaded] = useState(false);
+    const [currentPetIndex, setCurrentPetIndex] = useState(null);
     const [isEvolutionComplete, setIsEvolveComplete] = useState(false);
 
-    // Evolution stage thresholds
-    const eggStageLimit = 3;        // 0-2 tasks: egg stage
-    const juvenileStageLimit = 5;   // 3-7 tasks: kitten stage  
-    const fullGrownStage = eggStageLimit + juvenileStageLimit; // 8+ tasks: adult stage
+    const eggStageLimit = 3;
+    const juvenileStageLimit = 5;
+    const fullGrownStage = eggStageLimit + juvenileStageLimit;
+
+    // Load pet from localStorage on mount
+    useEffect(() => {
+        try {
+            const savedPetIndex = localStorage.getItem(STORAGE_KEY);
+            
+            if (savedPetIndex !== null) {
+                setCurrentPetIndex(parseInt(savedPetIndex, 10));
+            } else {
+                const randomIndex = Math.floor(Math.random() * pets.length);
+                setCurrentPetIndex(randomIndex);
+                localStorage.setItem(STORAGE_KEY, randomIndex.toString());
+            }
+        } catch (error) {
+            console.error('Error loading pet from localStorage:', error);
+            setCurrentPetIndex(Math.floor(Math.random() * pets.length));
+        } finally {
+            setIsLoaded(true);
+        }
+    }, []);
+
+    // Save pet to localStorage when it changes
+    useEffect(() => {
+        if (isLoaded && currentPetIndex !== null) {
+            try {
+                localStorage.setItem(STORAGE_KEY, currentPetIndex.toString());
+            } catch (error) {
+                console.error('Error saving pet to localStorage:', error);
+            }
+        }
+    }, [currentPetIndex, isLoaded]);
+
+    // Reset when pet reaches full evolution
+    useEffect(() => {
+        if (taskForProgressBar >= fullGrownStage && !isEvolutionComplete && isLoaded) {
+            setIsEvolveComplete(true);
+            
+            const timer = setTimeout(() => {
+                const newPetIndex = Math.floor(Math.random() * pets.length);
+                setCurrentPetIndex(newPetIndex);
+                onResetProgress();
+                setIsEvolveComplete(false);
+            }, 3000);
+
+            return () => clearTimeout(timer);
+        }
+    }, [taskForProgressBar, isEvolutionComplete, onResetProgress, fullGrownStage, isLoaded, pets.length]);
+
+    // Don't render until pet is loaded
+    if (!isLoaded || currentPetIndex === null) {
+        return (
+            <div className="p-6 mx-auto bg-white rounded-xl shadow-lg">
+                <div className="flex justify-center items-center h-16">
+                    <p className="text-gray-400">Loading pet...</p>
+                </div>
+            </div>
+        );
+    }
+
+    const currentPet = pets[currentPetIndex];
 
     // Select animation based on task progress
     const currentPetAnimation =
         taskForProgressBar >= fullGrownStage
-            ? currentPet.mature     // Adult cat
+            ? currentPet.mature
             : taskForProgressBar >= eggStageLimit
-            ? currentPet.juvenile   // Kitten
-            : currentPet.baby;      // Egg
+            ? currentPet.juvenile
+            : currentPet.baby;
 
     // Calculate progress bar segments for current stage
     const currentStageLimit =
         taskForProgressBar < eggStageLimit
-            ? eggStageLimit         // Show 3 segments for egg stage
+            ? eggStageLimit
             : taskForProgressBar < fullGrownStage
-            ? juvenileStageLimit    // Show 5 segments for kitten stage
-            : juvenileStageLimit;   // Show 5 segments for adult stage
+            ? juvenileStageLimit
+            : juvenileStageLimit;
     
-    // Offset calculation for progress bar
     const currentStageOffset = taskForProgressBar < eggStageLimit ? 0 : eggStageLimit;
 
     // Progress bar styling
     const barWidth = 200;
     const rectangleWidth = barWidth / currentStageLimit;
 
-    // Reset when pet reaches full evolution
-    useEffect(() => {
-        if (taskForProgressBar >= fullGrownStage && !isEvolutionComplete) {
-            setIsEvolveComplete(true); // Lock to prevent multiple timers
-            
-            setTimeout(() => {
-                setCurrentPet(pets[Math.floor(Math.random() * pets.length)]); // New random pet
-                onResetProgress(); // Reset task counter to 0
-                setIsEvolveComplete(false); // Unlock for next cycle
-            }, 3000);
-        }
-    }, [taskForProgressBar, isEvolutionComplete, onResetProgress]);
-
     return (
         <div className="p-6 mx-auto bg-white rounded-xl shadow-lg">
             <div className="flex justify-between gap-5">
                 
                 {/* Pet animation display */}
-                <div>
+                <div className="relative">
                     <Lottie
                         animationData={currentPetAnimation}
                         style={{ width: 50, height: 50 }}
                     />
+                    {/* Show pet color name */}
+                    <div className="text-xs text-center text-gray-500 mt-1">
+                        {currentPet.name}
+                    </div>
                 </div>
 
                 {/* Progress bar */}
@@ -101,11 +148,10 @@ const PetProgressBar = ({ taskForProgressBar, onResetProgress }) => {
                                     width: rectangleWidth,
                                     height: "100%",
                                     borderRadius: "5px",
-                                    // Green if completed, gray if not
                                     backgroundColor:
                                         index + currentStageOffset < taskForProgressBar
-                                            ? "#84cc16"  // Completed
-                                            : "#e5e7eb", // Incomplete
+                                            ? "#84cc16"
+                                            : "#e5e7eb",
                                 }}
                             />
                         ))}
