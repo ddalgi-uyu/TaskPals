@@ -1,4 +1,4 @@
-import TaskPals from '../components/TaskPals';
+import TaskPals from '@/components/TaskPals';
 
 export default function Home() {
   return (

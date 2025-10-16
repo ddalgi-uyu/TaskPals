@@ -4,15 +4,15 @@ import { useState, useEffect } from "react";
 import Lottie from "lottie-react";
 
 // Import animation files for different pet colors and stages
-import PinkEgg from "../assets/egg_pink_2.json";
-import PinkKitten from "../assets/kitten_pink_2.json";
-import PinkCat from "../assets/cat_pink_2.json";
-import BlueEgg from "../assets/egg_blue_2.json";
-import BlueKitten from "../assets/kitten_blue_2.json";
-import BlueCat from "../assets/cat_blue_2.json";
-import YellowEgg from "../assets/egg_yellow_2.json";
-import YellowKitten from "../assets/kitten_yellow_2.json";
-import YellowCat from "../assets/cat_yellow_2.json";
+import PinkEgg from "@/assets/egg_pink_2.json";
+import PinkKitten from "@/assets/kitten_pink_2.json";
+import PinkCat from "@/assets/cat_pink_2.json";
+import BlueEgg from "@/assets/egg_blue_2.json";
+import BlueKitten from "@/assets/kitten_blue_2.json";
+import BlueCat from "@/assets/cat_blue_2.json";
+import YellowEgg from "@/assets/egg_yellow_2.json";
+import YellowKitten from "@/assets/kitten_yellow_2.json";
+import YellowCat from "@/assets/cat_yellow_2.json";
 
 const PetProgressBar = ({ taskForProgressBar, onResetProgress }) => {
     
