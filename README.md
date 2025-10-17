@@ -1,4 +1,4 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+TaskPals is a lightweight task manager built with [Next.js](https://nextjs.org).
 
 ## Getting Started
 
@@ -10,6 +10,6 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-## GitHub pages
-The project is accessible on [Github pages] (https://ddalgi-uyu.github.io/TaskPals/).
+## GitHub Pages
+The project is accessible on [Github pages](https://ddalgi-uyu.github.io/TaskPals/).
 
