@@ -1,12 +1,12 @@
-// next.config.ts
 import type { NextConfig } from "next";
 
+const isProd = process.env.NODE_ENV === "production";
+
 const nextConfig: NextConfig = {
-  output: 'export',
-  basePath: '/TaskPals',
-  images: {
-    unoptimized: true,
-  },
+  output: "export",
+  basePath: isProd ? "/TaskPals" : "",
+  images: { unoptimized: true },
+  trailingSlash: true,
 };
 
 export default nextConfig;
