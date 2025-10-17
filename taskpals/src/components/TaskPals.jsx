@@ -99,7 +99,7 @@ const TaskPals = () => {
     
     if (item && item.done) {
       setTaskCompleted((counter) => counter - 1);
-      setTaskForProgressBar((counter) => Math.max(counter - 1, 0));
+      // setTaskForProgressBar((counter) => Math.max(counter - 1, 0));
     }
     
     const newList = toDoList.filter((item) => item.id !== id);
